@@ -27,7 +27,7 @@ public class Kafka
         producer = new ProducerBuilder<Null, string>(producerConfig).Build();
     }
 
-    public ConsumeResult<Ignore, string> Consume()
+    public ConsumeResult<Ignore, string> ConsumeCommand()
     {
         return consumer.Consume();
     }
