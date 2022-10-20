@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mailer", "Mailer\Mailer.csproj", "{8C2D22A4-13D6-42EF-8940-B3CEDA9F855A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sender", "Sender\Sender.csproj", "{AA7E430D-AACB-41C1-89AA-1819C2433190}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reader", "Reader\Reader.csproj", "{8B208B4F-5213-4460-8CF5-AAB1775A4EBA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +16,13 @@ Global
 		{8C2D22A4-13D6-42EF-8940-B3CEDA9F855A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C2D22A4-13D6-42EF-8940-B3CEDA9F855A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C2D22A4-13D6-42EF-8940-B3CEDA9F855A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA7E430D-AACB-41C1-89AA-1819C2433190}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA7E430D-AACB-41C1-89AA-1819C2433190}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA7E430D-AACB-41C1-89AA-1819C2433190}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA7E430D-AACB-41C1-89AA-1819C2433190}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B208B4F-5213-4460-8CF5-AAB1775A4EBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B208B4F-5213-4460-8CF5-AAB1775A4EBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B208B4F-5213-4460-8CF5-AAB1775A4EBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B208B4F-5213-4460-8CF5-AAB1775A4EBA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

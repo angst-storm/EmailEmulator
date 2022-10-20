@@ -31,9 +31,12 @@ services:
       POSTGRES_PASSWORD: "tglc1996"
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-  net-service:
-    container_name: net-service
-    build: Mailer
+  net-sender:
+    container_name: net-sender
+    build: Sender
+  net-reader:
+    container_name: net-reader
+    build: Reader
 volumes:
   redpanda-data:
     external: true
