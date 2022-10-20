@@ -1,4 +1,4 @@
-﻿## Запуск реализации на .NET:
+﻿## Запуск:
 
 ### Docker:
 
@@ -10,16 +10,6 @@ docker-compose up -d
 ### Redpanda:
 
 ```shell
-rpk topic create commands
-rpk topic create emails
-```
-
-## Использование:
-
-```shell
-rpk topic produce commands
->user username
->message messagetext
-^C
-rpk topic consume emails
+rpk topic create mails
+rpk topic create clicks
 ```
