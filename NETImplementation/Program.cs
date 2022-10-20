@@ -4,7 +4,7 @@ var db = new DataBase("Server=postgres;Port=5432;Database=postgres;User Id=postg
 db.AddUser("test-1");
 db.AddUser("test-2");
 db.AddUser("test-3");
-var kafka = new Kafka("kafka:9092");
+var kafka = new Kafka("redpanda:9092");
 
 while (true)
 {
