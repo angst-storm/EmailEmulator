@@ -21,7 +21,7 @@ var random = new Random();
 var j = 0;
 while (true)
 {
-    if (j < 3)
+    if (j < 1000)
     {
         producer.ProduceAsync(topic, new Message<Null, string>
         {

@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sender", "Sender\Sender.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reader", "Reader\Reader.csproj", "{8B208B4F-5213-4460-8CF5-AAB1775A4EBA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Analyzer", "Analyzer\Analyzer.csproj", "{25D9B776-B137-4A80-9D9E-5AC8B778AE4C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{8B208B4F-5213-4460-8CF5-AAB1775A4EBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B208B4F-5213-4460-8CF5-AAB1775A4EBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B208B4F-5213-4460-8CF5-AAB1775A4EBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25D9B776-B137-4A80-9D9E-5AC8B778AE4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25D9B776-B137-4A80-9D9E-5AC8B778AE4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25D9B776-B137-4A80-9D9E-5AC8B778AE4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25D9B776-B137-4A80-9D9E-5AC8B778AE4C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

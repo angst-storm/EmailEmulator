@@ -37,6 +37,9 @@ services:
   net-reader:
     container_name: net-reader
     build: Reader
+  net-analyzer:
+    container_name: net-analyzer
+    build: Analyzer
 volumes:
   redpanda-data:
     external: true
