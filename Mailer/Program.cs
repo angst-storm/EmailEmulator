@@ -1,4 +1,4 @@
-﻿using EmailEmulator;
+﻿using Mailer;
 
 var db = new DataBase("Server=postgres;Port=5432;Database=postgres;User Id=postgres;Password=tglc1996;");
 db.AddUser("test-1");

@@ -33,7 +33,7 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
   net-service:
     container_name: net-service
-    build: NETImplementation
+    build: Mailer
 volumes:
   redpanda-data:
     external: true

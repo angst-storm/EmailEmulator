@@ -1,6 +1,6 @@
 ﻿using Confluent.Kafka;
 
-namespace EmailEmulator;
+namespace Mailer;
 
 public class Kafka
 {

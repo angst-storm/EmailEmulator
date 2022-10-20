@@ -1,6 +1,6 @@
 ﻿using Npgsql;
 
-namespace EmailEmulator;
+namespace Mailer;
 
 public class DataBase
 {
