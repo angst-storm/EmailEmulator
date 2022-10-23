@@ -1,35 +1,23 @@
-﻿using System.Text.Json;
-using Confluent.Kafka;
+﻿using Shared;
 
 const string server = "redpanda:9092";
 const string topic = "mails";
 
-var producerConfig = new ProducerConfig
-{
-    BootstrapServers = server
-};
-var producer = new ProducerBuilder<Null, string>(producerConfig).Build();
+var redPanda = new RedPanda(server);
 
-var themes = new int[50];
-for (var i = 1; i <= 50; i++)
+var themes = Enumerable.Range(1, 50).ToArray();
+var random = new Random();
+var tasks = new List<Task>();
+
+for (var i = 0; i < 1000; i++)
 {
-    themes[i - 1] = i;
+    tasks.Add(redPanda.Produce(topic, new Mail
+    {
+        themes = themes.Where(t => random.Next(10) == 0).ToArray()
+    }));
 }
 
-var random = new Random();
-
-var j = 0;
-while (true)
+foreach (var task in tasks)
 {
-    if (j < 1000)
-    {
-        producer.ProduceAsync(topic, new Message<Null, string>
-        {
-            Value = JsonSerializer.Serialize(new
-            {
-                themes = themes.Where(t => random.Next(10) == 0).ToArray()
-            })
-        }).ContinueWith(a => Console.WriteLine($"produced: {a.Result.Message.Value}"));
-        j++;
-    }
+    await task;
 }

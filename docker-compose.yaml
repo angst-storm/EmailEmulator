@@ -33,13 +33,13 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
   net-sender:
     container_name: net-sender
-    build: Sender
+    image: net-sender:latest
   net-reader:
     container_name: net-reader
-    build: Reader
+    image: net-reader:latest
   net-analyzer:
     container_name: net-analyzer
-    build: Analyzer
+    image: net-analyzer:latest
 volumes:
   redpanda-data:
     external: true

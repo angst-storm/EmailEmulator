@@ -3,10 +3,11 @@ WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
+COPY ../Shared/Shared.csproj Shared/
+COPY /Analyzer/Analyzer.csproj Analyzer/
+RUN dotnet restore "Analyzer/Analyzer.csproj"
 COPY . .
-RUN dotnet restore "Analyzer.csproj"
-COPY . .
-WORKDIR "/src/"
+WORKDIR "/src/Analyzer"
 RUN dotnet build "Analyzer.csproj" -c Release -o /app/build
 
 FROM build AS publish

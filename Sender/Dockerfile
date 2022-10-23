@@ -3,10 +3,11 @@ WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
+COPY ../Shared/Shared.csproj Shared/
+COPY /Sender/Sender.csproj Sender/
+RUN dotnet restore "Sender/Sender.csproj"
 COPY . .
-RUN dotnet restore "Sender.csproj"
-COPY . .
-WORKDIR "/src/"
+WORKDIR "/src/Sender"
 RUN dotnet build "Sender.csproj" -c Release -o /app/build
 
 FROM build AS publish

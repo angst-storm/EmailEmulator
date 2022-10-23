@@ -3,10 +3,11 @@ WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
+COPY ../Shared/Shared.csproj Shared/
+COPY /Reader/Reader.csproj Reader/
+RUN dotnet restore "Reader/Reader.csproj"
 COPY . .
-RUN dotnet restore "Reader.csproj"
-COPY . .
-WORKDIR "/src/"
+WORKDIR "/src/Reader"
 RUN dotnet build "Reader.csproj" -c Release -o /app/build
 
 FROM build AS publish
