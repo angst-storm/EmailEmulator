@@ -10,12 +10,12 @@ namespace Shared
         private readonly IConsumer<Ignore, string> consumer;
         private readonly IProducer<Null, string> producer;
 
-        public RedPanda(string server)
+        public RedPanda(string server, string group)
         {
             var consumerConfig = new ConsumerConfig
             {
                 BootstrapServers = server,
-                GroupId = "group",
+                GroupId = group,
                 AutoOffsetReset = AutoOffsetReset.Earliest
             };
 
