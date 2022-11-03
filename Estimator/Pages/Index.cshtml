@@ -1,0 +1,29 @@
+﻿@page
+@using Estimator
+@model Estimator.Pages.IndexModel
+
+<style>
+table {
+border-collapse: collapse;
+}
+td {
+border: 1px solid black;
+}
+</style>
+<form method="get"><button>Send 100 mails</button></form>
+<table>
+    @foreach (var kvp in Program.UserStats)
+    {
+        <tr>
+            <td rowspan="2">@kvp.Key</td>
+            <td>@kvp.Value.ThemesInDb.Item1</td>
+            <td>@kvp.Value.ThemesInDb.Item2</td>
+            <td>@kvp.Value.ThemesInDb.Item3</td>
+        </tr>
+        <tr>
+            <td>@kvp.Value.TopThemes.Item1</td>
+            <td>@kvp.Value.TopThemes.Item2</td>
+            <td>@kvp.Value.TopThemes.Item3</td>
+        </tr>
+    }
+</table>
