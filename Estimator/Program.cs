@@ -5,13 +5,17 @@ namespace Estimator;
 
 public static class Program
 {
-    public static Dictionary<string, UserStat> UserStats = new();
-    private const string ConnString = "Server=localhost;Port=5432;Database=postgres;User Id=postgres;Password=tglc1996;";
-    private const string CommandsTopic = "commands";
+    private const string ConnString =
+        "Server=localhost;Port=5432;Database=postgres;User Id=postgres;Password=tglc1996;";
+
     private const string Server = "localhost:9092";
     private const string Group = "estimator";
     private const string ClicksTopic = "clicks";
-    private static readonly RedPanda RedPanda = new (Server, Group);
+    private const string CommandsTopic = "commands";
+    private static readonly RedPanda RedPanda = new(Server, Group);
+
+    public static Dictionary<int, UserStat> UserStats = new();
+    public static int SentCount { get; private set; }
 
     public static void Main(string[] args)
     {
@@ -20,7 +24,7 @@ public static class Program
         InitializeUserStats(false);
 
         Task.Run(AnalyzeProcess);
-        
+
         InitializeWepApp(args);
     }
 
@@ -43,8 +47,9 @@ public static class Program
                 db.AddUser($"User{number}", themes);
             }
         }
+
         var users = db.GetUsers();
-        UserStats = users.ToDictionary(u => u.Item1, u => new UserStat(u.Item2));
+        UserStats = users.ToDictionary(u => int.Parse(u.Item1[4..]), u => new UserStat(u.Item2));
     }
 
     private static void InitializeWepApp(string[] args)
@@ -59,10 +64,11 @@ public static class Program
 
         app.Run("https://localhost:7226");
     }
-    
-    public static void Send100Mails()
+
+    public static void SendMails(int count)
     {
-        RedPanda.Produce(CommandsTopic, "send 100");
+        RedPanda.Produce(CommandsTopic, $"send {count}");
+        SentCount += count;
     }
 
     private static void AnalyzeProcess()
@@ -73,7 +79,7 @@ public static class Program
             var click = JsonSerializer.Deserialize<Click>(cr.Message.Value);
             if (click is null)
                 throw new Exception();
-            UserStats[click.username].AddThemes(click.mailThemes);
+            UserStats[int.Parse(click.username[4..])].AddThemes(click.mailThemes);
         }
     }
 }

@@ -1,11 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Estimator.Pages;
 
 public class IndexModel : PageModel
 {
-    public void OnGet()
+    public RedirectResult OnPostSend(int count)
     {
-        Program.Send100Mails();
+        Program.SendMails(count);
+        return Redirect("/");
     }
 }

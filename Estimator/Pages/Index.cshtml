@@ -1,6 +1,7 @@
-﻿@page
+﻿@page "{handler?}"
 @using Estimator
 @model Estimator.Pages.IndexModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 <style>
 table {
@@ -10,20 +11,77 @@ td {
 border: 1px solid black;
 }
 </style>
-<form method="get"><button>Send 100 mails</button></form>
+
+<form method="post">
+    <input type="number" name="count" required/>
+    <button type="submit" asp-page="Index" asp-page-handler="Send">Send</button>
+</form>
+
+<p>Sended: @Program.SentCount</p>
+
 <table>
+    <tr>
+        <td rowspan="2" colspan="2"></td>
+        <td colspan="50" style="text-align: center">Темы</td>
+    </tr>
+    <tr>
+        @for (var i = 1; i <= 50; i++)
+        {
+            <td>@i</td>
+        }
+    </tr>
     @foreach (var kvp in Program.UserStats)
     {
         <tr>
-            <td rowspan="2">@kvp.Key</td>
-            <td>@kvp.Value.ThemesInDb.Item1</td>
-            <td>@kvp.Value.ThemesInDb.Item2</td>
-            <td>@kvp.Value.ThemesInDb.Item3</td>
+            @if (kvp.Key == 1)
+            {
+                <td rowspan="50">
+                    <span style="writing-mode: vertical-lr; -ms-writing-mode: tb-rl; transform: rotate(180deg);">
+                        Пользователи
+                    </span>
+                </td>
+            }
+            <td>@kvp.Key</td>
+            @for (var j = 1; j <= 50; j++)
+            {
+                var text = kvp.Value.ThemesInDb.Contains(j) ? "+" : "";
+                var color = kvp.Value.TopThemes.Contains(j) ?
+                    kvp.Value.ThemesInDb.Contains(j) ? "lightgreen" : "lightpink" :
+                    "transparent";
+                <td style="width: 25px; height: 25px; background-color: @color">@text</td>
+            }
         </tr>
+    }
+</table>
+<br/>
+<table>
+    <tr>
+        <td rowspan="2" colspan="2"></td>
+        <td colspan="50" style="text-align: center">Темы</td>
+    </tr>
+    <tr>
+        @for (var i = 1; i <= 50; i++)
+        {
+            <td>@i</td>
+        }
+    </tr>
+    @foreach (var kvp in Program.UserStats)
+    {
         <tr>
-            <td>@kvp.Value.TopThemes.Item1</td>
-            <td>@kvp.Value.TopThemes.Item2</td>
-            <td>@kvp.Value.TopThemes.Item3</td>
+            @if (kvp.Key == 1)
+            {
+                <td rowspan="50">
+                    <span style="writing-mode: vertical-lr; -ms-writing-mode: tb-rl; transform: rotate(180deg);">
+                        Пользователи
+                    </span>
+                </td>
+            }
+            <td>@kvp.Key</td>
+            @for (var j = 1; j <= 50; j++)
+            {
+                var count = kvp.Value[j];
+                <td style="width: 25px; height: 25px;">@count</td>
+            }
         </tr>
     }
 </table>
