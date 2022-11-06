@@ -22,6 +22,6 @@ while (true)
             for (var i = 0; i < int.Parse(parameters[1]); i++)
                 redPanda.Produce(mailsTopic, new Mail
                 {
-                    themes = themes.Where(t => random.Next(10) == 0).ToArray()
+                    themes = themes.Where(_ => random.Next(10) == 0).ToArray()
                 });
 }

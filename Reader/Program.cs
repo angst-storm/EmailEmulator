@@ -19,11 +19,12 @@ while (true)
 {
     var mailJson = redPanda.Consume().Message.Value;
     var mail = JsonSerializer.Deserialize<Mail>(mailJson);
-    if (mail is null)
-        throw new ArgumentNullException(nameof(mail), "Mail is null");
     for (var i = 0; i < users.Length; i++)
     {
-        if (mail.themes.Intersect(users[i]).Any() && random.Next(5) == 0)
+        var clickProbability = 10 + mail.themes.Intersect(users[i]).Count() * 10;
+        if (clickProbability > 90)
+            clickProbability = 90;
+        if (random.Next(100) < clickProbability)
             redPanda.Produce(clicksTopic, new Click
             {
                 userId = i + 1,

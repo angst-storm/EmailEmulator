@@ -18,6 +18,7 @@ border: 1px solid black;
 </form>
 
 <p>Sended: @Program.SentCount</p>
+<p>Clicks: @Program.UserStats.Sum(us => us.TotalClicksCount)</p>
 
 <table>
     <tr>
@@ -30,10 +31,10 @@ border: 1px solid black;
             <td>@i</td>
         }
     </tr>
-    @foreach (var user in Program.UserStats.Select((stat, i) => (id: i + 1, stat)))
+    @foreach (var stat in Program.UserStats)
     {
         <tr>
-            @if (user.id == 1)
+            @if (stat.UserId == 1)
             {
                 <td rowspan="50">
                     <span style="writing-mode: vertical-lr; -ms-writing-mode: tb-rl; transform: rotate(180deg);">
@@ -41,12 +42,16 @@ border: 1px solid black;
                     </span>
                 </td>
             }
-            <td>@user.id</td>
+            <td>@stat.UserId</td>
+            @{
+                var preferences = stat.GetPreferencesByPartsOfClicks();
+            }
             @for (var j = 1; j <= 50; j++)
             {
-                var text = user.stat.ThemesInDb.Contains(j) ? "+" : "";
-                var color = user.stat.TopThemes.Contains(j) ?
-                    user.stat.ThemesInDb.Contains(j) ? "lightgreen" : "lightpink" :
+                var themeInDb = stat.ThemesInDb.Contains(j);
+                var text = themeInDb ? "+" : "";
+                var color = preferences.Contains(j - 1) ?
+                    themeInDb ? "lightgreen" : "lightpink" :
                     "transparent";
                 <td style="width: 25px; height: 25px; background-color: @color">@text</td>
             }
@@ -65,10 +70,10 @@ border: 1px solid black;
             <td>@i</td>
         }
     </tr>
-    @foreach (var user in Program.UserStats.Select((stat, i) => (id: i + 1, stat)))
+    @foreach (var stat in Program.UserStats)
     {
         <tr>
-            @if (user.id == 1)
+            @if (stat.UserId == 1)
             {
                 <td rowspan="50">
                     <span style="writing-mode: vertical-lr; -ms-writing-mode: tb-rl; transform: rotate(180deg);">
@@ -76,11 +81,21 @@ border: 1px solid black;
                     </span>
                 </td>
             }
-            <td>@user.id</td>
+            <td>@stat.UserId</td>
+            @{
+                var parts = stat.GetThemesPartsOfClicks();
+                var preferences = stat.GetPreferencesByPartsOfClicks();
+            }
             @for (var j = 1; j <= 50; j++)
             {
-                var count = user.stat[j];
-                <td style="width: 25px; height: 25px;">@count</td>
+                var themeInDb = stat.ThemesInDb.Contains(j);
+                var themeIsPreference = preferences.Contains(j - 1);
+                var color = themeInDb ? "lightblue" : "transparent";
+                color = themeIsPreference ?
+                    themeInDb ? "blue" : "lightpink"
+                    : color;
+                var count = parts[j - 1];
+                <td style="width: 25px; height: 25px; background-color: @color">@count</td>
             }
         </tr>
     }

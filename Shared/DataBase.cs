@@ -22,20 +22,20 @@ namespace Shared
                 new NpgsqlCommand($"insert into users_to_themes values ({id}, {theme})", connection).ExecuteNonQuery();
         }
 
-        public IEnumerable<IEnumerable<int>> GetUsersThemes()
+        public IEnumerable<int[]> GetUsersThemes()
         {
             var countScalar = new NpgsqlCommand("select count(*) from users", connection).ExecuteScalar();
             var count = int.Parse(countScalar.ToString());
             for (var i = 1; i <= count; i++)
             {
-                var reader = new NpgsqlCommand($"select * from users_to_themes where user_id={i}", connection).ExecuteReader();
+                var reader = new NpgsqlCommand($"select * from users_to_themes where user_id={i}", connection)
+                    .ExecuteReader();
                 var themes = new List<int>();
                 while (reader.Read())
                     themes.Add((int)reader.GetValue(1));
-                yield return themes;
+                yield return themes.ToArray();
                 reader.Close();
             }
-            
         }
 
         public void InitializeTables()

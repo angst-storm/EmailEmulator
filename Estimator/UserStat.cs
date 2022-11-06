@@ -2,33 +2,59 @@
 
 public class UserStat
 {
-    private readonly int[] clicksOnTheme = new int[50];
-
-    public UserStat(int[] themes)
+    public UserStat(int userId, int[] themes)
     {
+        UserId = userId;
         ThemesInDb = themes;
+        ClicksOnTheme = new int[50];
     }
 
-    public int this[int theme] => clicksOnTheme[theme - 1];
+    public int UserId { get; }
 
     public int[] ThemesInDb { get; }
 
-    public int[] TopThemes
+    public int TotalClicksCount { get; private set; }
+
+    public int[] ClicksOnTheme { get; }
+
+    public int this[int theme] => ClicksOnTheme[theme - 1];
+
+    public void AddClick(int[] themes)
     {
-        get
-        {
-            return clicksOnTheme
-                .Select((n, i) => (i, n))
-                .OrderByDescending(n => n.n)
-                .Take(5)
-                .Select(n => n.i + 1)
-                .ToArray();
-        }
+        TotalClicksCount++;
+        foreach (var theme in themes)
+            ClicksOnTheme[theme - 1]++;
     }
 
-    public void AddThemes(int[] themes)
+    public int[] GetPreferenceByClicksCount(int count = 5)
     {
-        foreach (var theme in themes)
-            clicksOnTheme[theme - 1]++;
+        return ClicksOnTheme
+            .Select((n, i) => (i, n))
+            .OrderByDescending(n => n.n)
+            .Take(count)
+            .Select(n => n.i + 1)
+            .ToArray();
+    }
+
+    public int[] GetPreferencesByPartsOfClicks(int minPercent = 12)
+
+    {
+        return GetThemesPartsOfClicks()
+            .Select((p, i) => (p, i))
+            .Where(pi => pi.p > minPercent)
+            .Select(pi => pi.i)
+            .ToArray();
+    }
+
+    public int[] GetThemesPartsOfClicks()
+    {
+        return ClicksOnTheme
+            .Select(clicks =>
+            {
+                if (TotalClicksCount == 0)
+                    return 0;
+                return (int)(Math.Round((double)clicks / TotalClicksCount, 2) * 100);
+            })
+            .ToArray();
     }
 }
