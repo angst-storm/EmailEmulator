@@ -14,14 +14,14 @@ public static class Program
     private const string CommandsTopic = "commands";
     private static readonly RedPanda RedPanda = new(Server, Group);
 
-    public static Dictionary<int, UserStat> UserStats = new();
+    public static UserStat[] UserStats;
     public static int SentCount { get; private set; }
 
     public static void Main(string[] args)
     {
         RedPanda.Subscribe(ClicksTopic);
 
-        InitializeUserStats(false);
+        InitializeUserStats(true);
 
         Task.Run(AnalyzeProcess);
 
@@ -42,14 +42,16 @@ public static class Program
                     .Select(n => (n, random.Next()))
                     .OrderBy(ni => ni.Item2)
                     .Select(n => n.n)
-                    .Take(3)
+                    .Take(5)
                     .ToArray();
-                db.AddUser($"User{number}", themes);
+                db.AddUser(themes);
             }
         }
 
-        var users = db.GetUsers();
-        UserStats = users.ToDictionary(u => int.Parse(u.Item1[4..]), u => new UserStat(u.Item2));
+        var users = db.GetUsersThemes();
+        UserStats = users
+            .Select(themes => new UserStat(themes.ToArray()))
+            .ToArray();
     }
 
     private static void InitializeWepApp(string[] args)
@@ -79,7 +81,7 @@ public static class Program
             var click = JsonSerializer.Deserialize<Click>(cr.Message.Value);
             if (click is null)
                 throw new Exception();
-            UserStats[int.Parse(click.username[4..])].AddThemes(click.mailThemes);
+            UserStats[click.userId - 1].AddThemes(click.mailThemes);
         }
     }
 }

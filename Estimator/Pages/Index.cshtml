@@ -30,10 +30,10 @@ border: 1px solid black;
             <td>@i</td>
         }
     </tr>
-    @foreach (var kvp in Program.UserStats)
+    @foreach (var user in Program.UserStats.Select((stat, i) => (id: i + 1, stat)))
     {
         <tr>
-            @if (kvp.Key == 1)
+            @if (user.id == 1)
             {
                 <td rowspan="50">
                     <span style="writing-mode: vertical-lr; -ms-writing-mode: tb-rl; transform: rotate(180deg);">
@@ -41,12 +41,12 @@ border: 1px solid black;
                     </span>
                 </td>
             }
-            <td>@kvp.Key</td>
+            <td>@user.id</td>
             @for (var j = 1; j <= 50; j++)
             {
-                var text = kvp.Value.ThemesInDb.Contains(j) ? "+" : "";
-                var color = kvp.Value.TopThemes.Contains(j) ?
-                    kvp.Value.ThemesInDb.Contains(j) ? "lightgreen" : "lightpink" :
+                var text = user.stat.ThemesInDb.Contains(j) ? "+" : "";
+                var color = user.stat.TopThemes.Contains(j) ?
+                    user.stat.ThemesInDb.Contains(j) ? "lightgreen" : "lightpink" :
                     "transparent";
                 <td style="width: 25px; height: 25px; background-color: @color">@text</td>
             }
@@ -65,10 +65,10 @@ border: 1px solid black;
             <td>@i</td>
         }
     </tr>
-    @foreach (var kvp in Program.UserStats)
+    @foreach (var user in Program.UserStats.Select((stat, i) => (id: i + 1, stat)))
     {
         <tr>
-            @if (kvp.Key == 1)
+            @if (user.id == 1)
             {
                 <td rowspan="50">
                     <span style="writing-mode: vertical-lr; -ms-writing-mode: tb-rl; transform: rotate(180deg);">
@@ -76,10 +76,10 @@ border: 1px solid black;
                     </span>
                 </td>
             }
-            <td>@kvp.Key</td>
+            <td>@user.id</td>
             @for (var j = 1; j <= 50; j++)
             {
-                var count = kvp.Value[j];
+                var count = user.stat[j];
                 <td style="width: 25px; height: 25px;">@count</td>
             }
         </tr>

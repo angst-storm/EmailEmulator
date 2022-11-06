@@ -13,45 +13,38 @@ namespace Shared
             connection.Open();
         }
 
-        public void AddUser(string username, int[] themes)
+        public void AddUser(IEnumerable<int> themes)
         {
-            new NpgsqlCommand($"INSERT INTO users (" +
-                              $"username," +
-                              $"theme1," +
-                              $"theme2," +
-                              $"theme3) VALUES (" +
-                              $"'{username}'," +
-                              $"{themes[0]}," +
-                              $"{themes[1]}," +
-                              $"{themes[2]})", connection).ExecuteNonQuery();
+            var countScalar = new NpgsqlCommand("select count(*) from users", connection).ExecuteScalar();
+            var id = int.Parse(countScalar.ToString()) + 1;
+            new NpgsqlCommand($"insert into users values ({id})", connection).ExecuteNonQuery();
+            foreach (var theme in themes)
+                new NpgsqlCommand($"insert into users_to_themes values ({id}, {theme})", connection).ExecuteNonQuery();
         }
 
-        public IEnumerable<(string, int[])> GetUsers()
+        public IEnumerable<IEnumerable<int>> GetUsersThemes()
         {
-            var reader = new NpgsqlCommand("SELECT * FROM users", connection).ExecuteReader();
-            while (reader.Read())
-                yield return (
-                    (string)reader.GetValue(1), new[]
-                    {
-                        (int)reader.GetValue(2),
-                        (int)reader.GetValue(3),
-                        (int)reader.GetValue(4)
-                    }
-                );
-            reader.Close();
+            var countScalar = new NpgsqlCommand("select count(*) from users", connection).ExecuteScalar();
+            var count = int.Parse(countScalar.ToString());
+            for (var i = 1; i <= count; i++)
+            {
+                var reader = new NpgsqlCommand($"select * from users_to_themes where user_id={i}", connection).ExecuteReader();
+                var themes = new List<int>();
+                while (reader.Read())
+                    themes.Add((int)reader.GetValue(1));
+                yield return themes;
+                reader.Close();
+            }
+            
         }
 
         public void InitializeTables()
         {
-            new NpgsqlCommand("DROP TABLE IF EXISTS users", connection).ExecuteNonQuery();
-            new NpgsqlCommand(
-                    "CREATE TABLE users (" +
-                    "id serial primary key," +
-                    " username VARCHAR(50)," +
-                    " theme1 INTEGER," +
-                    " theme2 INTEGER," +
-                    " theme3 INTEGER)",
-                    connection)
+            new NpgsqlCommand("drop table if exists users", connection).ExecuteNonQuery();
+            new NpgsqlCommand("create table users (id serial primary key)", connection)
+                .ExecuteNonQuery();
+            new NpgsqlCommand("drop table if exists users_to_themes", connection).ExecuteNonQuery();
+            new NpgsqlCommand("create table users_to_themes (user_id integer, theme_id integer)", connection)
                 .ExecuteNonQuery();
         }
     }

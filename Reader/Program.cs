@@ -8,10 +8,12 @@ const string mailsTopic = "mails";
 const string clicksTopic = "clicks";
 
 var db = new DataBase(connString);
-var users = db.GetUsers().ToArray();
+var users = db.GetUsersThemes().ToArray();
 
 var redPanda = new RedPanda(server, group);
 redPanda.Subscribe(mailsTopic);
+
+var random = new Random();
 
 while (true)
 {
@@ -19,11 +21,13 @@ while (true)
     var mail = JsonSerializer.Deserialize<Mail>(mailJson);
     if (mail is null)
         throw new ArgumentNullException(nameof(mail), "Mail is null");
-    foreach (var user in users)
-        if (mail.themes.Intersect(user.Item2).Any())
+    for (var i = 0; i < users.Length; i++)
+    {
+        if (mail.themes.Intersect(users[i]).Any() && random.Next(5) == 0)
             redPanda.Produce(clicksTopic, new Click
             {
-                username = user.Item1,
+                userId = i + 1,
                 mailThemes = mail.themes
             });
+    }
 }

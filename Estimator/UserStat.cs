@@ -20,7 +20,7 @@ public class UserStat
             return clicksOnTheme
                 .Select((n, i) => (i, n))
                 .OrderByDescending(n => n.n)
-                .Take(3)
+                .Take(5)
                 .Select(n => n.i + 1)
                 .ToArray();
         }
