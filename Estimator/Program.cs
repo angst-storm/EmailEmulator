@@ -6,9 +6,9 @@ namespace Estimator;
 public static class Program
 {
     private const string ConnString =
-        "Server=localhost;Port=5432;Database=postgres;User Id=postgres;Password=tglc1996;";
+        "Server=postgres;Port=5432;Database=postgres;User Id=postgres;Password=tglc1996;";
 
-    private const string Server = "localhost:9092";
+    private const string Server = "redpanda:9092";
     private const string Group = "estimator";
     private const string ClicksTopic = "clicks";
     private const string CommandsTopic = "commands";
@@ -64,7 +64,7 @@ public static class Program
 
         app.MapRazorPages();
 
-        app.Run("https://localhost:7226");
+        app.Run("http://net-estimator:7226");
     }
 
     public static void SendMails(int count)

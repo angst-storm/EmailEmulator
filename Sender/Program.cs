@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using Shared;
 
-const string server = "localhost:9092";
+const string server = "redpanda:9092";
 const string group = "sender";
 const string commandsTopic = "commands";
 const string mailsTopic = "mails";
@@ -15,7 +15,14 @@ var random = new Random();
 while (true)
 {
     var command = redPanda.Consume().Message.Value;
-    command = JsonSerializer.Deserialize<string>(command);
+    try
+    {
+        command = JsonSerializer.Deserialize<string>(command);
+    }
+    catch (JsonException e)
+    {
+        command = "send 0";
+    }
     var parameters = command.Split();
     if (parameters.Length == 2)
         if (parameters[0] == "send")

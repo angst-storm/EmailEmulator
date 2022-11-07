@@ -1,8 +1,8 @@
 ﻿using System.Text.Json;
 using Shared;
 
-const string connString = "Server=localhost;Port=5432;Database=postgres;User Id=postgres;Password=tglc1996;";
-const string server = "localhost:9092";
+const string connString = "Server=postgres;Port=5432;Database=postgres;User Id=postgres;Password=tglc1996;";
+const string server = "redpanda:9092";
 const string group = "reader";
 const string mailsTopic = "mails";
 const string clicksTopic = "clicks";
