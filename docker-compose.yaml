@@ -44,6 +44,23 @@ services:
   net-reader:
     container_name: net-reader
     image: net-reader:latest
+  clickhouse:
+    container_name: clickhouse
+    image: clickhouse/clickhouse-server:latest
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+      - "9009:9009"
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 262144
+        hard: 262144
+  metabase:
+    container_name: metabase
+    image: metabase-with-clickhouse:latest
+    ports:
+      - "3000:3000"
 volumes:
   redpanda-data:
     external: true

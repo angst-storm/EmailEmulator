@@ -75,7 +75,7 @@ public static class Program
 
     private static void AnalyzeProcess()
     {
-        while (true)
+        for (var i = 0;;i++)
         {
             var cr = RedPanda.Consume();
             Console.WriteLine($"consumed: {cr.Message.Value}");
@@ -83,6 +83,11 @@ public static class Program
             if (click is null)
                 throw new Exception();
             UserStats[click.userId - 1].AddClick(click.mailThemes);
+            if (i % 100 == 0)
+            {
+                var averageError = UserStats.Average(us => us.Error);
+                RedPanda.Produce("errors", new Error(i, averageError));
+            }
         }
     }
 }

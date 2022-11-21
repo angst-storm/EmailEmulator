@@ -19,6 +19,18 @@ public class UserStat
 
     public int this[int theme] => ClicksOnTheme[theme - 1];
 
+    public double Error
+    {
+        get
+        {
+            var correctlyGuessed = GetPreferenceByClicksCount().Intersect(ThemesInDb).Count();
+            var wronglyGuessed = GetPreferenceByClicksCount().Except(ThemesInDb).Count();
+            var error = 1 - ((double)correctlyGuessed / ThemesInDb.Length -
+                (double)wronglyGuessed / (50 - ThemesInDb.Length) + 1) / 2;
+            return error;
+        }
+    }
+
     public void AddClick(int[] themes)
     {
         TotalClicksCount++;
