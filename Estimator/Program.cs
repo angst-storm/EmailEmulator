@@ -13,7 +13,8 @@ public static class Program
     private const string ClicksTopic = "clicks";
     private const string CommandsTopic = "commands";
     private static readonly RedPanda RedPanda = new(Server, Group);
-    public static readonly UserStat[] UserStats = InitializeUserStats(false);
+    public static readonly UserStat[] UserStats = 
+        InitializeUserStats(bool.Parse(Environment.GetEnvironmentVariable("NEW_USERS") ?? "False"));
     public static int SentCount { get; private set; }
 
     public static void Main(string[] args)

@@ -36,6 +36,8 @@ services:
   net-estimator:
     container_name: net-estimator
     image: net-estimator:latest
+    environment:
+      NEW_USERS: "True"
     ports:
       - "7226:7226"
   net-sender:
